@@ -36,7 +36,7 @@ qboolean	fulldetail;
 qboolean	onlyents;
  //hypo
 qboolean	onlytextures;
-qboolean	mapHasCapitals;
+int	mapHasCapitals; //count how many surfaces use capitals and print them
 //hypo end
 qboolean	nomerge;
 qboolean	nowater;
@@ -69,14 +69,14 @@ char* ConvertLower(char* mapTexIn)
 	//copy to tmp name
 	strcpy(tempTex, mapTexIn);
 
-	mapTexOut = strlower(mapTexIn);
+	strlower(mapTexIn);
 
-	if (!strcmp(tempTex, mapTexOut) == 0)
+	if (!strcmp(tempTex, mapTexIn) == 0)
 	{
-		mapHasCapitals = true;
+		++mapHasCapitals;
 	}
 
-	return mapTexOut;
+	return mapTexIn;
 }
 //hypo end
 
@@ -590,7 +590,7 @@ int main (int argc, char **argv)
 			StripExtension(out);
 			sprintf(mapFix, "%s_fix.bsp", out);
 
-			printf("map has capitals. %s\n", mapFix);
+			printf("map has %i capitals. Writing... %s\n", mapHasCapitals, mapFix);
 
 			WriteBSPFile(mapFix);
 		}
